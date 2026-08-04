@@ -507,48 +507,160 @@ img { max-width: 100%; display: block; }
   color: var(--text-gray);
   line-height: 1.7;
 }
-.beta-invite {
+/* 路线图 */
+.roadmap-section {
   background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%);
   border-radius: var(--radius-lg);
-  padding: 48px 40px;
-  text-align: center;
+  padding: 40px 36px;
   position: relative;
   overflow: hidden;
 }
-.beta-invite::before {
+.roadmap-section::before {
   content: '';
   position: absolute;
   top: -60px; right: -60px;
   width: 200px; height: 200px;
   background: radial-gradient(circle, rgba(79, 124, 255, 0.12) 0%, transparent 70%);
 }
-.beta-badge {
-  display: inline-block;
-  padding: 6px 20px;
-  background: rgba(79, 124, 255, 0.1);
-  color: var(--primary);
-  border-radius: 50px;
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-.beta-invite h3 {
-  font-size: 26px;
+.roadmap-title {
+  font-size: 22px;
   font-weight: 800;
   color: var(--text-dark);
-  margin-bottom: 12px;
-  line-height: 1.3;
+  margin-bottom: 24px;
+  text-align: center;
+  position: relative;
 }
-.beta-invite p {
-  font-size: 16px;
+.roadmap-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  position: relative;
+}
+.roadmap-item {
+  display: grid;
+  grid-template-columns: 100px 160px 1fr;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid rgba(79, 124, 255, 0.08);
+  transition: all 0.25s ease;
+}
+.roadmap-item:hover {
+  box-shadow: 0 4px 16px rgba(79, 124, 255, 0.08);
+  transform: translateX(4px);
+}
+.roadmap-done {
+  border-left: 3px solid #10b981;
+}
+.roadmap-active {
+  border-left: 3px solid var(--primary);
+  background: linear-gradient(90deg, rgba(79, 124, 255, 0.04) 0%, #fff 30%);
+}
+.roadmap-status {
+  font-size: 13px;
+  font-weight: 600;
   color: var(--text-gray);
-  margin-bottom: 28px;
-  max-width: 520px;
-  margin-left: auto;
-  margin-right: auto;
+}
+.roadmap-done .roadmap-status { color: #059669; }
+.roadmap-active .roadmap-status { color: var(--primary); }
+.roadmap-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+.roadmap-desc {
+  font-size: 13px;
+  color: var(--text-gray);
+  line-height: 1.5;
 }
 
-/* ===================== 模块八：CTA行动召唤 ===================== */
+/* ===================== 差异化分析 ===================== */
+.diff-section {
+  background: #fff;
+}
+.diff-table-wrap {
+  overflow-x: auto;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  border: 1px solid #f1f5f9;
+}
+.diff-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 800px;
+}
+.diff-table thead {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+.diff-table th {
+  text-align: left;
+  padding: 18px 24px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-dark);
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+.diff-table th:first-child {
+  border-top-left-radius: 16px;
+}
+.diff-table th:last-child {
+  border-top-right-radius: 16px;
+}
+.diff-table td {
+  padding: 20px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  color: var(--text-dark);
+  line-height: 1.6;
+  vertical-align: top;
+}
+.diff-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.diff-table tbody tr:hover {
+  background: rgba(79, 124, 255, 0.02);
+}
+.diff-col-type { width: 15%; }
+.diff-col-product { width: 25%; }
+.diff-col-problem { width: 25%; }
+.diff-col-diff { width: 35%; }
+
+.diff-tag {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.tag-orange { background: #fff7ed; color: #ea580c; }
+.tag-blue { background: #eff6ff; color: #2563eb; }
+.tag-purple { background: #faf5ff; color: #7c3aed; }
+.tag-green { background: #ecfdf5; color: #059669; }
+
+.diff-highlight {
+  font-weight: 600;
+  color: var(--primary);
+  background: linear-gradient(135deg, rgba(79, 124, 255, 0.04) 0%, rgba(107, 155, 255, 0.06) 100%);
+  position: relative;
+  padding-left: 20px !important;
+}
+.diff-highlight::before {
+  content: '';
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(180deg, var(--primary) 0%, var(--primary-light) 100%);
+  border-radius: 2px;
+}
+
+/* ===================== 模块八：项目总结 ===================== */
 .cta-section {
   background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   color: #fff;
@@ -556,6 +668,7 @@ img { max-width: 100%; display: block; }
   position: relative;
   overflow: hidden;
 }
+.cta-section .resource-link { color: var(--text-dark); }
 .cta-section::before {
   content: '';
   position: absolute;
@@ -610,6 +723,56 @@ img { max-width: 100%; display: block; }
   opacity: 0.8;
 }
 .cta-note span { margin: 0 8px; }
+
+/* 资源链接 */
+.resource-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.resource-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 32px;
+  background: #fff;
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--text-dark);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease;
+  min-width: 280px;
+}
+.resource-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.18);
+}
+.resource-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+.resource-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.resource-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+.resource-url {
+  font-size: 13px;
+  color: var(--text-gray);
+}
+.resource-arrow {
+  font-size: 20px;
+  color: var(--primary);
+  flex-shrink: 0;
+}
 
 /* ===================== 模块九：页脚 ===================== */
 .site-footer {
@@ -693,7 +856,8 @@ img { max-width: 100%; display: block; }
   .feature-grid { grid-template-columns: 1fr; }
   .scene-grid { grid-template-columns: 1fr; gap: 20px; }
   .vision-grid { grid-template-columns: 1fr; gap: 20px; }
-  .beta-invite { padding: 36px 28px; }
+  .roadmap-section { padding: 32px 24px; }
+  .roadmap-item { grid-template-columns: 1fr; gap: 6px; }
   .footer-top { grid-template-columns: 1fr; gap: 40px; padding-top: 48px; }
   .footer-social { flex-direction: row; align-items: center; justify-content: space-between; }
 }
@@ -712,9 +876,15 @@ img { max-width: 100%; display: block; }
   .pain-summary h2 { font-size: 26px; }
   .vision-grid { grid-template-columns: 1fr; gap: 16px; }
   .vision-card { padding: 28px 24px; }
-  .beta-invite { padding: 28px 24px; }
-  .beta-invite h3 { font-size: 22px; }
-  .beta-invite p { font-size: 15px; }
+  .roadmap-section { padding: 24px 20px; }
+  .roadmap-title { font-size: 18px; }
+  .resource-link { min-width: auto; width: 100%; padding: 16px 20px; }
+  .diff-table { font-size: 13px; }
+  .diff-table th, .diff-table td { padding: 14px 16px; }
+  .diff-col-type { width: 18%; }
+  .diff-col-product { width: 22%; }
+  .diff-col-problem { width: 22%; }
+  .diff-col-diff { width: 38%; }
   .feature-card { padding: 28px 24px; }
   .scene-card { padding: 32px 24px; }
   .process-step { padding: 32px 24px; }
@@ -753,7 +923,7 @@ img { max-width: 100%; display: block; }
       <a href="#footer">关于我们</a>
     </nav>
     <div class="nav-actions">
-      <a href="#cta" class="btn btn-primary">免费试用</a>
+      <a href="#cta" class="btn btn-primary">查看演示</a>
       <a href="#" class="btn btn-secondary">登录</a>
       <button class="mobile-toggle" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
         <span></span><span></span><span></span>
@@ -775,16 +945,16 @@ img { max-width: 100%; display: block; }
       <h1>每一次短暂相遇<br/>都值得<span class="highlight">继续认识</span></h1>
       <p>LinkUp 是一款面向短期合作场景的智能社交连接工具。帮助课程组队、项目合作中的人发现值得长期认识的人，把线下破冰的信息沉淀为可追溯的关系资产。</p>
       <div class="hero-buttons">
-        <a href="#cta" class="btn btn-primary">免费试用</a>
+        <a href="#cta" class="btn btn-primary">查看演示</a>
         <a href="#features" class="btn btn-secondary">了解产品 →</a>
       </div>
     </div>
     <div class="hero-visual">
       <div class="flow-steps">
         <div class="flow-step">
-          <span class="icon">📱</span>
-          <div class="label">二维码签到</div>
-          <div class="sub">扫码即入</div>
+          <span class="icon">�</span>
+          <div class="label">房间号加入</div>
+          <div class="sub">输入即入</div>
         </div>
         <span class="flow-arrow">→</span>
         <div class="flow-step">
@@ -838,7 +1008,7 @@ img { max-width: 100%; display: block; }
         <div class="solution-cards">
           <div class="solution-card">
             <span class="emoji">📋</span>
-            <p>扫码录入轻量信息，AI生成同频地图，谁和谁有共同点一目了然</p>
+            <p>输入房间号加入，完成轻量问答，AI生成同频地图，谁和谁有共同点一目了然</p>
           </div>
           <div class="solution-card">
             <span class="emoji">💾</span>
@@ -854,6 +1024,35 @@ img { max-width: 100%; display: block; }
   </div>
 </section>
 
+<!-- ==================== 模块六：适用场景 ==================== -->
+<section id="scenes" class="section scene-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>谁在用 LinkUp</h2>
+    </div>
+    <div class="scene-grid">
+      <div class="scene-card">
+        <span class="scene-emoji">🎓</span>
+        <h3>校园课程组队</h3>
+        <span class="scene-user">大学生 · 研究生</span>
+        <p>课程设计、小组作业、创新比赛，成员来自不同专业，快速认识彼此</p>
+      </div>
+      <div class="scene-card">
+        <span class="scene-emoji">💼</span>
+        <h3>职场项目合作</h3>
+        <span class="scene-user">职场新人 · 项目成员</span>
+        <p>新团队融入、跨部门协作、项目启动会，快速建立信任</p>
+      </div>
+      <div class="scene-card">
+        <span class="scene-emoji">🎪</span>
+        <h3>兴趣社群活动</h3>
+        <span class="scene-user">组织者 · 参与者</span>
+        <p>行业交流会、兴趣社团、线下沙龙，让参与者带走有价值的连接</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ==================== 模块四：核心流程 ==================== -->
 <section class="section process-section">
   <div class="container">
@@ -864,9 +1063,9 @@ img { max-width: 100%; display: block; }
     <div class="process-flow">
       <div class="process-step">
         <span class="step-num">01</span>
-        <span class="step-icon">📱</span>
-        <h3>扫码录入</h3>
-        <p>组织者创建活动生成二维码，成员扫码后在手机上完成 2-3 个轻量问答，1分钟搞定</p>
+        <span class="step-icon">�</span>
+        <h3>房间号加入</h3>
+        <p>组织者创建活动生成 4 位房间号，成员输入房间号后在手机上完成 2-3 个轻量问答，1分钟搞定</p>
       </div>
       <span class="process-arrow">→</span>
       <div class="process-step">
@@ -918,35 +1117,6 @@ img { max-width: 100%; display: block; }
   </div>
 </section>
 
-<!-- ==================== 模块六：适用场景 ==================== -->
-<section id="scenes" class="section scene-section">
-  <div class="container">
-    <div class="section-header">
-      <h2>谁在用 LinkUp</h2>
-    </div>
-    <div class="scene-grid">
-      <div class="scene-card">
-        <span class="scene-emoji">🎓</span>
-        <h3>校园课程组队</h3>
-        <span class="scene-user">大学生 · 研究生</span>
-        <p>课程设计、小组作业、创新比赛，成员来自不同专业，快速认识彼此</p>
-      </div>
-      <div class="scene-card">
-        <span class="scene-emoji">💼</span>
-        <h3>职场项目合作</h3>
-        <span class="scene-user">职场新人 · 项目成员</span>
-        <p>新团队融入、跨部门协作、项目启动会，快速建立信任</p>
-      </div>
-      <div class="scene-card">
-        <span class="scene-emoji">🎪</span>
-        <h3>兴趣社群活动</h3>
-        <span class="scene-user">组织者 · 参与者</span>
-        <p>行业交流会、兴趣社团、线下沙龙，让参与者带走有价值的连接</p>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ==================== 模块七：产品愿景 ==================== -->
 <section class="section">
   <div class="container">
@@ -971,26 +1141,99 @@ img { max-width: 100%; display: block; }
         <p>匿名留灯、双方解锁的机制，让兴趣表达零压力，让每一次连接都基于真实意愿</p>
       </div>
     </div>
-    <div class="beta-invite">
-      <div class="beta-badge">🎉 内测邀请中</div>
-      <h3>LinkUp 正在寻找第一批深度共创用户</h3>
-      <p>如果你是课程组织者、项目负责人、或经常组织团队活动的人，欢迎加入内测计划，共同打磨产品</p>
-      <a href="#cta" class="btn btn-primary">申请内测资格</a>
+    <div class="roadmap-section">
+      <h3 class="roadmap-title">产品路线图</h3>
+      <div class="roadmap-timeline">
+        <div class="roadmap-item roadmap-done">
+          <span class="roadmap-status">✅ 已完成</span>
+          <span class="roadmap-name">MVP 核心功能</span>
+          <span class="roadmap-desc">房间号加入、轻量问答、同频地图、留灯连接</span>
+        </div>
+        <div class="roadmap-item roadmap-active">
+          <span class="roadmap-status">🔵 进行中</span>
+          <span class="roadmap-name">展示页搭建</span>
+          <span class="roadmap-desc">产品展示页、在线预览部署</span>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-status">⏳ 计划中</span>
+          <span class="roadmap-name">种子用户内测</span>
+          <span class="roadmap-desc">邀请首批团队使用，收集反馈迭代</span>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-status">⏳ 计划中</span>
+          <span class="roadmap-name">正式版发布</span>
+          <span class="roadmap-desc">公开注册、数据分析后台、多场景适配</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ==================== 模块八：CTA行动召唤 ==================== -->
+<!-- ==================== 差异化分析 ==================== -->
+<section class="section diff-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>差异化与不可替代性</h2>
+      <p>LinkUp 不是任何现有工具的替代品，而是填补了「短期合作中的关系沉淀」这一空白</p>
+    </div>
+    <div class="diff-table-wrap">
+      <table class="diff-table">
+        <thead>
+          <tr>
+            <th class="diff-col-type">类型</th>
+            <th class="diff-col-product">代表产品</th>
+            <th class="diff-col-problem">解决的问题</th>
+            <th class="diff-col-diff">LinkUp 差异</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="diff-tag tag-orange">社交破冰工具</span></td>
+            <td>Icebreaker、团队破冰游戏网站</td>
+            <td>活跃气氛，让陌生人开始交流</td>
+            <td class="diff-highlight">只解决"开始聊天"，不沉淀关系</td>
+          </tr>
+          <tr>
+            <td><span class="diff-tag tag-blue">团队协作工具</span></td>
+            <td>Slack、飞书、Microsoft Teams</td>
+            <td>项目沟通和协作</td>
+            <td class="diff-highlight">保存信息，但不会帮助发现人与人的连接</td>
+          </tr>
+          <tr>
+            <td><span class="diff-tag tag-purple">兴趣社交平台</span></td>
+            <td>小红书、豆瓣、小宇宙社群</td>
+            <td>找同好、扩大社交圈</td>
+            <td class="diff-highlight">需要主动搜索，缺少具体场景触发</td>
+          </tr>
+          <tr>
+            <td><span class="diff-tag tag-green">职业社交平台</span></td>
+            <td>LinkedIn、脉脉</td>
+            <td>建立职业关系</td>
+            <td class="diff-highlight">偏长期职业关系，不适合短期合作场景</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 模块八：项目总结 ==================== -->
 <section id="cta" class="section cta-section">
   <div class="container cta-inner">
-    <h2>准备好让每一次合作都不留遗憾了吗？</h2>
-    <p>免费试用，无需下载，扫码即用</p>
-    <div class="cta-buttons">
-      <a href="#" class="btn btn-primary">免费试用</a>
-      <a href="#" class="btn btn-secondary">联系商务</a>
+    <h2>LinkUp — 让每一次短暂相遇都有继续认识的理由</h2>
+    <p>面向短期合作场景的智能社交连接工具，把线下破冰的信息沉淀为可追溯的关系资产</p>
+    <div class="resource-links">
+      <a href="https://alin131439.github.io/linkup/" target="_blank" rel="noopener" class="resource-link">
+        <span class="resource-icon">🌐</span>
+        <div class="resource-text">
+          <span class="resource-title">在线预览</span>
+          <span class="resource-url">alin131439.github.io/linkup</span>
+        </div>
+        <span class="resource-arrow">↗</span>
+      </a>
     </div>
     <div class="cta-note">
-      无需信用卡 <span>·</span> 30秒创建活动 <span>·</span> 支持所有设备
+      React + TypeScript + Tailwind CSS <span>·</span> Zustand 状态管理 <span>·</span> 响应式设计
     </div>
   </div>
 </section>
