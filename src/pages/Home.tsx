@@ -152,12 +152,12 @@ export default function Home() {
           <div className="text-center animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-100 rounded-full text-brand-700 font-medium text-sm mb-6">
               <Sparkles className="w-4 h-4" />
-              AI 驱动的破冰连接工具
+              AI 驱动的社交连接工具
             </div>
             <h1 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
-              轻松破冰，<span className="gradient-text">自然连接</span>
+              发现值得<span className="gradient-text">长期连接</span>的人
             </h1>
-            <p className="text-lg text-gray-600 max-w-xl mx-auto">三步快速进入房间，AI 为你生成破冰小游戏，让团队快速热络起来</p>
+            <p className="text-lg text-gray-600 max-w-xl mx-auto">在课程组队、项目协作、行业活动等短期合作场景中，帮助你自然地认识他人，将一面之缘变为长期关系</p>
           </div>
         </div>
       </section>
