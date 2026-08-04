@@ -15,6 +15,28 @@ export interface Member {
   joinedAt: number;
 }
 
+export interface ChatMessage {
+  id: string;
+  senderId: string;
+  text: string;
+  timestamp: number;
+}
+
+export interface ConnectionNote {
+  memberId: string;
+  note: string;
+  tags: string[];
+  createdAt: number;
+}
+
+export interface LightConnection {
+  memberId: string;
+  lit: boolean;
+  mutual: boolean;
+  litAt?: number;
+  matchedAt?: number;
+}
+
 export interface RoomState {
   roomCode: string;
   sceneType: SceneType;
@@ -26,7 +48,19 @@ export interface RoomState {
   warmupStep: number;
   moodResults: Record<string, { mood: number; energy: number }>;
   wouldYouRatherAnswers: Record<string, { choice: 'A' | 'B' }>;
-  
+
+  // Connection (留灯) state
+  lightsRemaining: number;
+  maxLightsPerDay: number;
+  lightConnections: LightConnection[];
+
+  // Chat state
+  activeChatMemberId: string | null;
+  chatMessages: Record<string, ChatMessage[]>;
+
+  // Connection notes
+  connectionNotes: ConnectionNote[];
+
   // Actions
   createRoom: (sceneType: SceneType, sceneTitle: string) => string;
   joinRoom: (code: string) => boolean;
@@ -38,6 +72,20 @@ export interface RoomState {
   setWouldYouRather: (memberId: string, choice: 'A' | 'B') => void;
   goToPhase: (phase: RoomPhase) => void;
   leaveRoom: () => void;
+
+  // Connection actions
+  giveLight: (memberId: string) => { success: boolean; reason?: string };
+  cancelLight: (memberId: string) => void;
+  markMutual: (memberId: string) => void;
+
+  // Chat actions
+  openChat: (memberId: string) => void;
+  closeChat: () => void;
+  sendMessage: (memberId: string, text: string) => void;
+
+  // Notes actions
+  saveNote: (memberId: string, note: string, tags: string[]) => void;
+  getNote: (memberId: string) => ConnectionNote | undefined;
 }
 
 const MOCK_MEMBERS: Omit<Member, 'joinedAt'>[] = [
@@ -45,6 +93,14 @@ const MOCK_MEMBERS: Omit<Member, 'joinedAt'>[] = [
   { id: 'm2', name: '李同学', avatar: '🧑', isOrganizer: false },
   { id: 'm3', name: '王同学', avatar: '👨', isOrganizer: false },
   { id: 'm4', name: '赵同学', avatar: '👩‍🦰', isOrganizer: false },
+  { id: 'm5', name: '陈同学', avatar: '🧔', isOrganizer: false },
+  { id: 'm6', name: '刘同学', avatar: '👩‍🦱', isOrganizer: false },
+  { id: 'm7', name: '周同学', avatar: '🧑‍🦰', isOrganizer: false },
+  { id: 'm8', name: '吴同学', avatar: '👨‍💼', isOrganizer: false },
+  { id: 'm9', name: '郑同学', avatar: '👩‍💻', isOrganizer: false },
+  { id: 'm10', name: '孙同学', avatar: '🧑‍🎨', isOrganizer: false },
+  { id: 'm11', name: '林同学', avatar: '👨‍🚀', isOrganizer: false },
+  { id: 'm12', name: '黄同学', avatar: '👩‍🔬', isOrganizer: false },
 ];
 
 function generateRoomCode(): string {
@@ -52,12 +108,34 @@ function generateRoomCode(): string {
 }
 
 function generateMockMembers(): Member[] {
-  const count = 3 + Math.floor(Math.random() * 2);
-  return MOCK_MEMBERS.slice(0, count).map((m) => ({
+  return MOCK_MEMBERS.map((m) => ({
     ...m,
-    joinedAt: Date.now() + Math.floor(Math.random() * 3000),
+    joinedAt: Date.now() + Math.floor(Math.random() * 5000),
   }));
 }
+
+const MOCK_INITIAL_MESSAGES: Record<string, ChatMessage[]> = {
+  m1: [
+    {
+      id: 'welcome-1',
+      senderId: 'm1',
+      text: '嗨！很高兴和你连上 ☀️',
+      timestamp: Date.now() - 300000,
+    },
+    {
+      id: 'welcome-2',
+      senderId: 'me',
+      text: '你好！看到我们都对 AI 工具感兴趣，太好了',
+      timestamp: Date.now() - 240000,
+    },
+    {
+      id: 'welcome-3',
+      senderId: 'm1',
+      text: '是啊！你最近有在用什么有趣的 AI 工具吗？',
+      timestamp: Date.now() - 180000,
+    },
+  ],
+};
 
 export const useStore = create<RoomState>()(
   persist(
@@ -72,6 +150,15 @@ export const useStore = create<RoomState>()(
       warmupStep: 0,
       moodResults: {},
       wouldYouRatherAnswers: {},
+
+      lightsRemaining: 3,
+      maxLightsPerDay: 3,
+      lightConnections: [],
+
+      activeChatMemberId: null,
+      chatMessages: MOCK_INITIAL_MESSAGES,
+
+      connectionNotes: [],
 
       createRoom: (sceneType, sceneTitle) => {
         const code = generateRoomCode();
@@ -94,6 +181,12 @@ export const useStore = create<RoomState>()(
           warmupStep: 0,
           moodResults: {},
           wouldYouRatherAnswers: {},
+          lightsRemaining: 3,
+          maxLightsPerDay: 3,
+          lightConnections: [],
+          activeChatMemberId: null,
+          chatMessages: MOCK_INITIAL_MESSAGES,
+          connectionNotes: [],
         });
         return code;
       },
@@ -117,6 +210,12 @@ export const useStore = create<RoomState>()(
           moodResults: {},
           wouldYouRatherAnswers: {},
           members: [selfMember, ...mockMembers],
+          lightsRemaining: 3,
+          maxLightsPerDay: 3,
+          lightConnections: [],
+          activeChatMemberId: null,
+          chatMessages: MOCK_INITIAL_MESSAGES,
+          connectionNotes: [],
         });
         return true;
       },
@@ -189,7 +288,105 @@ export const useStore = create<RoomState>()(
           warmupStep: 0,
           moodResults: {},
           wouldYouRatherAnswers: {},
+          lightsRemaining: 3,
+          lightConnections: [],
+          activeChatMemberId: null,
+          chatMessages: {},
+          connectionNotes: [],
         });
+      },
+
+      giveLight: (memberId) => {
+        const state = get();
+        const existing = state.lightConnections.find((l) => l.memberId === memberId);
+        if (existing?.lit) return { success: false, reason: 'already_lit' };
+        if (state.lightsRemaining <= 0) return { success: false, reason: 'no_lights' };
+
+        const newConnection: LightConnection = {
+          memberId,
+          lit: true,
+          mutual: existing?.mutual || false,
+          litAt: Date.now(),
+        };
+
+        const updated = state.lightConnections.filter((l) => l.memberId !== memberId);
+        updated.push(newConnection);
+
+        set({
+          lightConnections: updated,
+          lightsRemaining: state.lightsRemaining - 1,
+        });
+
+        return { success: true };
+      },
+
+      cancelLight: (memberId) => {
+        const state = get();
+        const conn = state.lightConnections.find((l) => l.memberId === memberId);
+        if (!conn?.lit) return;
+
+        if (!conn.mutual) {
+          set({
+            lightConnections: state.lightConnections.filter((l) => l.memberId !== memberId),
+            lightsRemaining: state.lightsRemaining + 1,
+          });
+        }
+      },
+
+      markMutual: (memberId) => {
+        const state = get();
+        const existing = state.lightConnections.find((l) => l.memberId === memberId);
+        const updated = state.lightConnections.map((l) =>
+          l.memberId === memberId ? { ...l, mutual: true, matchedAt: Date.now() } : l
+        );
+
+        if (existing) {
+          set({ lightConnections: updated });
+        } else {
+          const newConn: LightConnection = {
+            memberId,
+            lit: false,
+            mutual: true,
+            matchedAt: Date.now(),
+          };
+          set({ lightConnections: [...updated, newConn] });
+        }
+      },
+
+      openChat: (memberId) => {
+        set({ activeChatMemberId: memberId });
+      },
+
+      closeChat: () => {
+        set({ activeChatMemberId: null });
+      },
+
+      sendMessage: (memberId, text) => {
+        const state = get();
+        const msg: ChatMessage = {
+          id: `msg-${Date.now()}`,
+          senderId: 'me',
+          text,
+          timestamp: Date.now(),
+        };
+        const existing = state.chatMessages[memberId] || [];
+        set({
+          chatMessages: {
+            ...state.chatMessages,
+            [memberId]: [...existing, msg],
+          },
+        });
+      },
+
+      saveNote: (memberId, note, tags) => {
+        const state = get();
+        const updated = state.connectionNotes.filter((n) => n.memberId !== memberId);
+        updated.push({ memberId, note, tags, createdAt: Date.now() });
+        set({ connectionNotes: updated });
+      },
+
+      getNote: (memberId) => {
+        return get().connectionNotes.find((n) => n.memberId === memberId);
       },
     }),
     {
@@ -204,6 +401,12 @@ export const useStore = create<RoomState>()(
         currentPhase: state.currentPhase,
         moodResults: state.moodResults,
         wouldYouRatherAnswers: state.wouldYouRatherAnswers,
+        lightsRemaining: state.lightsRemaining,
+        maxLightsPerDay: state.maxLightsPerDay,
+        lightConnections: state.lightConnections,
+        activeChatMemberId: state.activeChatMemberId,
+        chatMessages: state.chatMessages,
+        connectionNotes: state.connectionNotes,
       }),
     }
   )

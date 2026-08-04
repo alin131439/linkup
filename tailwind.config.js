@@ -40,6 +40,11 @@ export default {
         'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
         'heart-burst': 'heartBurst 0.6s ease-out',
         'gradient': 'gradient 8s linear infinite',
+        'bulb-light': 'bulbLight 1.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
+        'flash-bright': 'flashBright 1.4s ease-in-out',
+        'dark-to-light': 'darkToLight 2s ease-in-out',
+        'connection-pulse': 'connectionPulse 1.5s ease-out',
+        'spawn-in': 'spawnIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
       },
       keyframes: {
         fadeIn: {
@@ -70,6 +75,36 @@ export default {
         gradient: {
           '0%, 100%': { 'background-position': '0% 50%' },
           '50%': { 'background-position': '100% 50%' },
+        },
+        bulbLight: {
+          '0%': { transform: 'scale(1)', filter: 'brightness(1)' },
+          '25%': { transform: 'scale(1.3)', filter: 'brightness(2.5)' },
+          '50%': { transform: 'scale(1.2)', filter: 'brightness(2)' },
+          '75%': { transform: 'scale(1.1)', filter: 'brightness(1.6)' },
+          '100%': { transform: 'scale(1)', filter: 'brightness(1.2)' },
+        },
+        flashBright: {
+          '0%': { backgroundColor: 'rgba(0,0,0,0)', opacity: '0' },
+          '20%': { backgroundColor: 'rgba(255,255,255,0.15)', opacity: '0.6' },
+          '50%': { backgroundColor: 'rgba(255,255,255,0.25)', opacity: '0.8' },
+          '80%': { backgroundColor: 'rgba(255,255,255,0.1)', opacity: '0.4' },
+          '100%': { backgroundColor: 'rgba(0,0,0,0)', opacity: '0' },
+        },
+        darkToLight: {
+          '0%': { backgroundColor: '#0f0f23' },
+          '25%': { backgroundColor: '#1a1a35' },
+          '50%': { backgroundColor: '#2a2a4a' },
+          '75%': { backgroundColor: '#6b6b85' },
+          '100%': { backgroundColor: '#fafafa' },
+        },
+        connectionPulse: {
+          '0%': { transform: 'scale(0.5)', opacity: '0' },
+          '50%': { transform: 'scale(1.2)', opacity: '1' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
+        },
+        spawnIn: {
+          '0%': { transform: 'scale(0)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
         },
       },
       backgroundImage: {

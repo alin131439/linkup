@@ -73,4 +73,36 @@ body {
   .text-shadow-lg {
     text-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
   }
+
+  .dark-bg {
+    background: linear-gradient(180deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+  }
+
+  .dark-bg-radial {
+    background: radial-gradient(ellipse at center, #1a1a3e 0%, #0f0f23 60%, #000000 100%);
+  }
+
+  .light-bg {
+    background: linear-gradient(180deg, #fafafa 0%, #f5f3ff 50%, #ffffff 100%);
+  }
+
+  .bulb-glow {
+    filter: drop-shadow(0 0 8px rgba(255, 200, 50, 0.8)) drop-shadow(0 0 20px rgba(255, 200, 50, 0.4));
+  }
+
+  .bulb-off {
+    filter: grayscale(0.5) brightness(0.6);
+  }
+
+  .dark-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .dark-card-lit {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
 }

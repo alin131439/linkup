@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LinkUp - 产品展示页</title>
+<style>
+/* ===================== 全局样式 ===================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #1a1a2e;
+  background: #ffffff;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+
+:root {
+  --primary: #4F7CFF;
+  --primary-light: #6B9BFF;
+  --primary-dark: #3A5FD4;
+  --bg-white: #FFFFFF;
+  --bg-light: #F8FAFF;
+  --bg-dark: #1a1d2e;
+  --text-dark: #1a1a2e;
+  --text-gray: #6b7280;
+  --text-light: #9ca3af;
+  --shadow-sm: 0 4px 20px rgba(79, 124, 255, 0.1);
+  --shadow-md: 0 8px 30px rgba(79, 124, 255, 0.12);
+  --shadow-lg: 0 15px 50px rgba(79, 124, 255, 0.15);
+  --radius: 14px;
+  --radius-lg: 16px;
+  --radius-btn: 50px;
+  --max-w: 1200px;
+}
+
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section { padding: 90px 0; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 36px;
+  border-radius: var(--radius-btn);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(79, 124, 255, 0.35);
+}
+.btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(79, 124, 255, 0.45);
+}
+.btn-secondary {
+  background: #fff;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+}
+.btn-secondary:hover {
+  background: var(--bg-light);
+  transform: scale(1.05);
+}
+
+/* ===================== 模块一：导航栏 ===================== */
+.navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+.nav-inner {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--text-dark);
+}
+.nav-logo svg { width: 28px; height: 28px; color: var(--primary); }
+.nav-menu { display: flex; align-items: center; gap: 6px; }
+.nav-menu a {
+  position: relative;
+  padding: 8px 18px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-gray);
+  border-radius: 10px;
+  transition: color 0.3s ease;
+}
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 24px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+  transition: transform 0.3s ease;
+}
+.nav-menu a:hover { color: var(--primary); }
+.nav-menu a:hover::after { transform: translateX(-50%) scaleX(1); }
+.nav-actions { display: flex; align-items: center; gap: 12px; }
+.nav-actions .btn { padding: 10px 24px; font-size: 14px; }
+.mobile-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+.mobile-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text-dark);
+  border-radius: 2px;
+}
+.mobile-menu {
+  display: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  background: #fff;
+  padding: 16px 24px;
+  flex-direction: column;
+  gap: 4px;
+}
+.mobile-menu a {
+  padding: 12px 16px;
+  font-size: 15px;
+  color: var(--text-gray);
+  border-radius: 10px;
+  font-weight: 500;
+}
+.mobile-menu a:hover { background: var(--bg-light); color: var(--primary); }
+
+/* ===================== 模块二：英雄区 ===================== */
+.hero {
+  padding-top: 160px;
+  padding-bottom: 100px;
+  background: linear-gradient(135deg, var(--bg-light) 0%, #ffffff 60%, #ffffff 100%);
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(79, 124, 255, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.hero-text h1 {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -1px;
+  color: var(--text-dark);
+  margin-bottom: 24px;
+}
+.hero-text h1 .highlight {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-text p {
+  font-size: 19px;
+  color: var(--text-gray);
+  line-height: 1.7;
+  margin-bottom: 36px;
+  max-width: 520px;
+}
+.hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+.hero-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 30px;
+}
+.flow-steps {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.flow-step {
+  background: #fff;
+  border: 1.5px solid rgba(79, 124, 255, 0.2);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  min-width: 110px;
+}
+.flow-step:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.flow-step .icon { font-size: 32px; margin-bottom: 8px; display: block; }
+.flow-step .label { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+.flow-step .sub { font-size: 11px; color: var(--text-gray); margin-top: 2px; }
+.flow-arrow {
+  color: var(--primary);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* ===================== 模块三：痛点与解决方案 ===================== */
+.pain-section { background: #fff; }
+.pain-summary {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 64px;
+}
+.pain-summary h2 {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--text-dark);
+  line-height: 1.3;
+}
+.pain-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+.pain-col h3, .solution-col h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 28px;
+  padding-left: 12px;
+  border-left: 4px solid;
+}
+.pain-col h3 { border-color: #d1d5db; color: var(--text-gray); }
+.solution-col h3 { border-color: var(--primary); color: var(--primary); }
+.pain-cards, .solution-cards { display: flex; flex-direction: column; gap: 16px; }
+.pain-card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.pain-card .emoji { font-size: 28px; flex-shrink: 0; }
+.pain-card p { font-size: 15px; color: var(--text-gray); line-height: 1.6; }
+.solution-card {
+  background: linear-gradient(135deg, #f0f4ff 0%, #fff 100%);
+  border: 1.5px solid rgba(79, 124, 255, 0.25);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+.solution-card:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+}
+.solution-card .emoji { font-size: 28px; flex-shrink: 0; }
+.solution-card p { font-size: 15px; color: var(--text-dark); line-height: 1.6; font-weight: 500; }
+
+/* ===================== 模块四：核心流程 ===================== */
+.process-section { background: var(--bg-light); }
+.section-header { text-align: center; margin-bottom: 64px; }
+.section-header h2 {
+  font-size: 40px;
+  font-weight: 800;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+}
+.section-header p {
+  font-size: 17px;
+  color: var(--text-gray);
+  margin-top: 12px;
+}
+.process-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.process-step {
+  flex: 1;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(79, 124, 255, 0.08);
+}
+.process-step:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); }
+.process-step .step-num {
+  font-size: 72px;
+  font-weight: 800;
+  color: rgba(79, 124, 255, 0.08);
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+.process-step .step-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+  display: block;
+}
+.process-step h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+.process-step p {
+  font-size: 14px;
+  color: var(--text-gray);
+  line-height: 1.7;
+}
+.process-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+  font-size: 28px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+/* ===================== 模块五：核心功能 ===================== */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+.feature-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(79, 124, 255, 0.06);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary), var(--primary-light));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-md);
+}
+.feature-card:hover::before { transform: scaleX(1); }
+.feature-card .feature-icon {
+  font-size: 40px;
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, #f0f4ff 0%, #e8eeff 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+.feature-card h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 12px;
+}
+.feature-card p {
+  font-size: 15px;
+  color: var(--text-gray);
+  line-height: 1.7;
+}
+
+/* ===================== 模块六：适用场景 ===================== */
+.scene-section { background: var(--bg-light); }
+.scene-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.scene-card {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.35s ease;
+  text-align: center;
+  border: 1px solid rgba(79, 124, 255, 0.06);
+}
+.scene-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-md); }
+.scene-emoji {
+  font-size: 56px;
+  margin-bottom: 20px;
+  display: block;
+}
+.scene-card h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+.scene-user {
+  display: inline-block;
+  background: var(--bg-light);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.scene-card p {
+  font-size: 14px;
+  color: var(--text-gray);
+  line-height: 1.7;
+}
+
+/* ===================== 模块七：用户数据 ===================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-bottom: 60px;
+}
+.stat-card { text-align: center; }
+.stat-number {
+  font-size: 56px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.stat-desc {
+  font-size: 16px;
+  color: var(--text-gray);
+  margin-top: 12px;
+  font-weight: 500;
+}
+.testimonial {
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 40px;
+  background: var(--bg-light);
+  border-radius: var(--radius-lg);
+  position: relative;
+}
+.testimonial::before {
+  content: '"';
+  position: absolute;
+  top: -10px; left: 30px;
+  font-size: 80px;
+  color: var(--primary);
+  opacity: 0.2;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+.testimonial p {
+  font-size: 18px;
+  color: var(--text-dark);
+  line-height: 1.7;
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* ===================== 模块八：CTA行动召唤 ===================== */
+.cta-section {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #fff;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: -150px; right: -150px;
+  width: 400px; height: 400px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+.cta-section::after {
+  content: '';
+  position: absolute;
+  bottom: -100px; left: -100px;
+  width: 300px; height: 300px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 50%;
+}
+.cta-inner { position: relative; z-index: 1; }
+.cta-section h2 {
+  font-size: 44px;
+  font-weight: 800;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.cta-section p {
+  font-size: 19px;
+  opacity: 0.9;
+  margin-bottom: 36px;
+}
+.cta-buttons { display: flex; gap: 16px; justify-content: center; margin-bottom: 24px; flex-wrap: wrap; }
+.cta-buttons .btn-primary {
+  background: #fff;
+  color: var(--primary);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+  font-size: 16px;
+  padding: 16px 44px;
+}
+.cta-buttons .btn-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+}
+.cta-buttons .btn-secondary {
+  background: transparent;
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+.cta-buttons .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #fff;
+}
+.cta-note {
+  font-size: 14px;
+  opacity: 0.8;
+}
+.cta-note span { margin: 0 8px; }
+
+/* ===================== 模块九：页脚 ===================== */
+.site-footer {
+  background: var(--bg-dark);
+  color: var(--text-light);
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 2fr 1fr;
+  gap: 60px;
+  padding-top: 64px;
+  padding-bottom: 48px;
+}
+.footer-brand { display: flex; flex-direction: column; gap: 16px; }
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 22px;
+  color: #fff;
+}
+.footer-logo svg { width: 32px; height: 32px; color: var(--primary-light); }
+.footer-tagline { font-size: 15px; line-height: 1.6; max-width: 280px; }
+.footer-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+.footer-col h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 20px;
+}
+.footer-col ul { display: flex; flex-direction: column; gap: 12px; }
+.footer-col a {
+  font-size: 14px;
+  color: var(--text-light);
+  transition: color 0.25s ease;
+}
+.footer-col a:hover { color: #fff; }
+.footer-social { display: flex; flex-direction: column; gap: 16px; }
+.social-icons { display: flex; gap: 12px; }
+.social-link {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-light);
+  transition: all 0.3s ease;
+}
+.social-link svg { width: 18px; height: 18px; }
+.social-link:hover {
+  background: var(--primary);
+  color: #fff;
+  transform: translateY(-2px);
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px 0;
+}
+.footer-bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+}
+.footer-bottom-inner .copyright { color: #6b7280; }
+.footer-bottom-links { display: flex; gap: 16px; }
+.footer-bottom-links a { color: #6b7280; transition: color 0.25s; }
+.footer-bottom-links a:hover { color: #fff; }
+
+/* ===================== 响应式 ===================== */
+@media (max-width: 1024px) {
+  .section { padding: 70px 0; }
+  .hero { padding-top: 130px; padding-bottom: 70px; }
+  .hero-text h1 { font-size: 42px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual { order: -1; }
+  .pain-grid { grid-template-columns: 1fr; gap: 24px; }
+  .pain-col h3, .solution-col h3 { margin-bottom: 20px; }
+  .process-flow { flex-direction: column; }
+  .process-arrow { transform: rotate(90deg); padding: 8px 0; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .scene-grid { grid-template-columns: 1fr; gap: 20px; }
+  .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .footer-top { grid-template-columns: 1fr; gap: 40px; padding-top: 48px; }
+  .footer-social { flex-direction: row; align-items: center; justify-content: space-between; }
+}
+
+@media (max-width: 768px) {
+  .section { padding: 56px 0; }
+  .hero { padding-top: 120px; padding-bottom: 56px; }
+  .hero-text h1 { font-size: 34px; }
+  .hero-text p { font-size: 17px; }
+  .section-header h2 { font-size: 28px; }
+  .cta-section h2 { font-size: 30px; }
+  .mobile-toggle { display: flex; }
+  .nav-menu, .nav-actions .btn-secondary { display: none; }
+  .nav-actions .btn-primary { padding: 10px 20px; font-size: 13px; }
+  .mobile-menu.open { display: flex; }
+  .pain-summary h2 { font-size: 26px; }
+  .stats-grid { grid-template-columns: 1fr; gap: 32px; }
+  .stat-number { font-size: 44px; }
+  .testimonial { padding: 28px 24px; }
+  .testimonial p { font-size: 16px; }
+  .feature-card { padding: 28px 24px; }
+  .scene-card { padding: 32px 24px; }
+  .process-step { padding: 32px 24px; }
+  .footer-links { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .footer-bottom-inner { flex-direction: column; gap: 8px; text-align: center; }
+  .flow-steps { gap: 8px; }
+  .flow-step { min-width: 90px; padding: 16px 12px; }
+  .flow-step .icon { font-size: 26px; }
+  .flow-step .label { font-size: 12px; }
+  .flow-arrow { font-size: 18px; }
+  .cta-buttons { flex-direction: column; align-items: center; }
+  .cta-buttons .btn { width: 100%; max-width: 280px; }
+  .hero-buttons { flex-direction: column; align-items: flex-start; }
+  .hero-buttons .btn { width: 100%; max-width: 280px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== 模块一：导航栏 ==================== -->
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M8 12H16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="6" cy="12" r="2" fill="currentColor"/>
+        <circle cx="18" cy="12" r="2" fill="currentColor"/>
+      </svg>
+      LinkUp
+    </a>
+    <nav class="nav-menu">
+      <a href="#hero">首页</a>
+      <a href="#features">产品功能</a>
+      <a href="#scenes">适用场景</a>
+      <a href="#footer">关于我们</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="#cta" class="btn btn-primary">免费试用</a>
+      <a href="#" class="btn btn-secondary">登录</a>
+      <button class="mobile-toggle" onclick="document.getElementById('mobileMenu').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="mobile-menu">
+    <a href="#hero">首页</a>
+    <a href="#features">产品功能</a>
+    <a href="#scenes">适用场景</a>
+    <a href="#footer">关于我们</a>
+  </div>
+</header>
+
+<!-- ==================== 模块二：英雄区 ==================== -->
+<section id="hero" class="hero">
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <h1>每一次短暂相遇<br/>都值得<span class="highlight">继续认识</span></h1>
+      <p>LinkUp 是一款面向短期合作场景的智能社交连接工具。帮助课程组队、项目合作中的人发现值得长期认识的人，把线下破冰的信息沉淀为可追溯的关系资产。</p>
+      <div class="hero-buttons">
+        <a href="#cta" class="btn btn-primary">免费试用</a>
+        <a href="#features" class="btn btn-secondary">了解产品 →</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="flow-steps">
+        <div class="flow-step">
+          <span class="icon">📱</span>
+          <div class="label">二维码签到</div>
+          <div class="sub">扫码即入</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <span class="icon">🧠</span>
+          <div class="label">回答问题</div>
+          <div class="sub">2-3题轻量</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <span class="icon">🗺️</span>
+          <div class="label">同频地图</div>
+          <div class="sub">AI生成</div>
+        </div>
+        <span class="flow-arrow">→</span>
+        <div class="flow-step">
+          <span class="icon">💡</span>
+          <div class="label">留灯连接</div>
+          <div class="sub">互留解锁</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 模块三：痛点与解决方案 ==================== -->
+<section class="section pain-section">
+  <div class="container">
+    <div class="pain-summary">
+      <h2>线下认识了新队友，散场后你能记住几个？</h2>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-col">
+        <h3>💡 你有没有遇到过这样的场景？</h3>
+        <div class="pain-cards">
+          <div class="pain-card">
+            <span class="emoji">😶</span>
+            <p>线下破冰聊了很多，散场后谁说了什么全忘了</p>
+          </div>
+          <div class="pain-card">
+            <span class="emoji">🤝</span>
+            <p>合作结束了，群里再也没人说话，关系就断了</p>
+          </div>
+          <div class="pain-card">
+            <span class="emoji">❓</span>
+            <p>想继续认识某个人，但直接加微信怕冒昧</p>
+          </div>
+        </div>
+      </div>
+      <div class="solution-col">
+        <h3>✨ LinkUp 帮你解决</h3>
+        <div class="solution-cards">
+          <div class="solution-card">
+            <span class="emoji">📋</span>
+            <p>扫码录入轻量信息，AI生成同频地图，谁和谁有共同点一目了然</p>
+          </div>
+          <div class="solution-card">
+            <span class="emoji">💾</span>
+            <p>关系资产自动沉淀，每次合作都在积累连接记录</p>
+          </div>
+          <div class="solution-card">
+            <span class="emoji">💡</span>
+            <p>匿名留灯机制，互留才解锁联系方式，零压力表达兴趣</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 模块四：核心流程 ==================== -->
+<section class="section process-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>三步，从认识到连接</h2>
+      <p>LinkUp 不替代线下破冰，而是给线下破冰装上记忆外挂</p>
+    </div>
+    <div class="process-flow">
+      <div class="process-step">
+        <span class="step-num">01</span>
+        <span class="step-icon">📱</span>
+        <h3>扫码录入</h3>
+        <p>组织者创建活动生成二维码，成员扫码后在手机上完成 2-3 个轻量问答，1分钟搞定</p>
+      </div>
+      <span class="process-arrow">→</span>
+      <div class="process-step">
+        <span class="step-num">02</span>
+        <span class="step-icon">🧠</span>
+        <h3>AI生成同频地图</h3>
+        <p>活动结束后，AI 分析所有人的回答，生成团队认知地图，谁和谁有共同点一目了然</p>
+      </div>
+      <span class="process-arrow">→</span>
+      <div class="process-step">
+        <span class="step-num">03</span>
+        <span class="step-icon">💡</span>
+        <h3>留灯连接</h3>
+        <p>匿名表达兴趣，双方互留后解锁联系方式，关系自动归档至个人资产库</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 模块五：核心功能 ==================== -->
+<section id="features" class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>核心功能</h2>
+      <p>每一个功能都为了解决一个真实的社交痛点</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🧊</div>
+        <h3>智能破冰生成器</h3>
+        <p>根据场景推荐设问型话题，不是娱乐游戏，而是能暴露性格和做事方式的深度问题。如「如果这门课只能取消一个环节，你希望取消汇报还是报告？」</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🗺️</div>
+        <h3>同频地图</h3>
+        <p>AI 分析回答中的兴趣、经历和观点，生成团队认知地图。「你们团队 3 个人都在关注 AI」「2 个人喜欢摄影」</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💡</div>
+        <h3>留灯机制</h3>
+        <p>匿名向感兴趣的人表达继续认识的意愿，只有互相留灯才解锁联系方式。零压力、不尴尬。</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏦</div>
+        <h3>关系资产管理</h3>
+        <p>所有连接记录、同频标签自动归档。未来新场景中，AI 会主动提醒「这位成员你们去年合作过，都关注教育科技」</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 模块六：适用场景 ==================== -->
+<section id="scenes" class="section scene-section">
+  <div class="container">
+    <div class="section-header">
+      <h2>谁在用 LinkUp</h2>
+    </div>
+    <div class="scene-grid">
+      <div class="scene-card">
+        <span class="scene-emoji">🎓</span>
+        <h3>校园课程组队</h3>
+        <span class="scene-user">大学生 · 研究生</span>
+        <p>课程设计、小组作业、创新比赛，成员来自不同专业，快速认识彼此</p>
+      </div>
+      <div class="scene-card">
+        <span class="scene-emoji">💼</span>
+        <h3>职场项目合作</h3>
+        <span class="scene-user">职场新人 · 项目成员</span>
+        <p>新团队融入、跨部门协作、项目启动会，快速建立信任</p>
+      </div>
+      <div class="scene-card">
+        <span class="scene-emoji">🎪</span>
+        <h3>兴趣社群活动</h3>
+        <span class="scene-user">组织者 · 参与者</span>
+        <p>行业交流会、兴趣社团、线下沙龙，让参与者带走有价值的连接</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 模块七：用户数据 ==================== -->
+<section class="section">
+  <div class="container">
+    <!-- Beta 阶段标识 -->
+    <div style="text-align:center;margin-bottom:24px;">
+      <span style="display:inline-block;padding:6px 20px;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border-radius:50px;font-size:13px;font-weight:600;letter-spacing:0.5px;">
+        ⚡ Beta 内测阶段 · 数据持续收集中
+      </span>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-number">50+</div>
+        <div class="stat-desc">种子团队内测中</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">200+</div>
+        <div class="stat-desc">Beta 用户参与</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">4.8<span style="font-size:24px;">/5</span></div>
+        <div class="stat-desc">内测用户满意度</div>
+      </div>
+    </div>
+    <div class="testimonial">
+      <p>"LinkUp 让我们课程组队的效率提升了不少。以前需要破冰半小时，现在 5 分钟就能找到和你有共同话题的队友。Beta 阶段已经很好用了，期待正式版。"</p>
+      <div style="margin-top:16px;font-size:13px;color:var(--text-gray);font-style:normal;">— 某 985 高校 · 产品设计课程 Beta 测试用户</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 模块八：CTA行动召唤 ==================== -->
+<section id="cta" class="section cta-section">
+  <div class="container cta-inner">
+    <h2>准备好让每一次合作都不留遗憾了吗？</h2>
+    <p>免费试用，无需下载，扫码即用</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn btn-primary">免费试用</a>
+      <a href="#" class="btn btn-secondary">联系商务</a>
+    </div>
+    <div class="cta-note">
+      无需信用卡 <span>·</span> 30秒创建活动 <span>·</span> 支持所有设备
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 模块九：页脚 ==================== -->
+<footer id="footer" class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 12C4 7.58172 7.58172 4 12 4C16.4183 4 20 7.58172 20 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M8 12H16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="6" cy="12" r="2" fill="currentColor"/>
+            <circle cx="18" cy="12" r="2" fill="currentColor"/>
+          </svg>
+          LinkUp
+        </div>
+        <p class="footer-tagline">让每一次短暂相遇都有继续认识的理由</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>产品</h4>
+          <ul>
+            <li><a href="#features">产品功能</a></li>
+            <li><a href="#scenes">适用场景</a></li>
+            <li><a href="#">价格</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>支持</h4>
+          <ul>
+            <li><a href="#">帮助中心</a></li>
+            <li><a href="#">联系我们</a></li>
+            <li><a href="#">隐私政策</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>关于</h4>
+          <ul>
+            <li><a href="#">团队介绍</a></li>
+            <li><a href="#">合作联系</a></li>
+            <li><a href="#">媒体报道</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-social">
+        <h4 style="font-size:14px;font-weight:600;color:#fff;margin-bottom:0;">关注我们</h4>
+        <div class="social-icons">
+          <a href="https://github.com/alin131439/linkup" class="social-link" title="GitHub" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.235-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+          <a href="#" class="social-link" title="小红书">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><circle cx="9" cy="10" r="1.5"/><circle cx="15" cy="10" r="1.5"/><path d="M8 15c1 1.5 2.5 2 4 2s3-.5 4-2"/></svg>
+          </a>
+          <a href="#" class="social-link" title="微信">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8.691 2C4.768 2 1.5 4.716 1.5 8.052c0 1.93 1.11 3.66 2.83 4.77L3.5 14.5l2.16-1.2c.65.19 1.34.29 2.05.29.2 0 .4-.01.59-.02-.12-.42-.19-.86-.19-1.32 0-2.95 2.74-5.34 6.11-5.34.17 0 .34.01.51.02C14.26 4.65 11.79 2 8.69 2zm-2.24 3.73c.5 0 .9.4.9.9s-.4.9-.9.9-.9-.4-.9-.9.4-.9.9-.9zm4.48 0c.5 0 .9.4.9.9s-.4.9-.9.9-.9-.4-.9-.9.4-.9.9-.9zm4.5 3.14c-3.04 0-5.5 2.05-5.5 4.57 0 2.52 2.46 4.57 5.5 4.57.66 0 1.28-.1 1.87-.28L19.5 19l-.51-1.62c1.46-.94 2.39-2.44 2.39-4.11 0-2.52-2.46-4.57-5.5-4.57zm-1.88 2.48c.38 0 .69.31.69.69s-.31.69-.69.69-.69-.31-.69-.69.31-.69.69-.69zm3.76 0c.38 0 .69.31.69.69s-.31.69-.69.69-.69-.31-.69-.69.31-.69.69-.69z"/></svg>
+          </a>
+          <a href="#" class="social-link" title="即刻">
+            <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3" fill="white"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <span class="copyright">© 2026 LinkUp. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#">服务条款</a>
+        <a href="#">隐私政策</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // 平滑滚动（浏览器已原生支持，作为补充）
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // 关闭移动端菜单
+        document.getElementById('mobileMenu').classList.remove('open');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

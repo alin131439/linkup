@@ -157,9 +157,7 @@ export default function Home() {
             <h1 className="text-4xl md:text-5xl font-display font-bold text-gray-900 mb-4">
               轻松破冰，<span className="gradient-text">自然连接</span>
             </h1>
-            <p className="text-lg text-gray-600 max-w-xl mx-auto">
-              三步快速进入房间，AI 为你生成破冰小游戏，让团队快速热络起来
-            </p>
+            <p className="text-lg text-gray-600 max-w-xl mx-auto">三步快速进入房间，AI 为你生成破冰小游戏，让团队快速热络起来</p>
           </div>
         </div>
       </section>

@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
 import Home from '@/pages/Home';
 import RoomLobby from '@/pages/RoomLobby';
@@ -6,11 +6,13 @@ import Warmup from '@/pages/Warmup';
 import Icebreak from '@/pages/Icebreak';
 import FrequencyMap from '@/pages/FrequencyMap';
 import Connections from '@/pages/Connections';
+import Chat from '@/pages/Chat';
+import ConnectionNotes from '@/pages/ConnectionNotes';
 import Profile from '@/pages/Profile';
 
 function AppContent() {
   const location = useLocation();
-  const hideNavPaths = ['/room/', '/warmup'];
+  const hideNavPaths = ['/room/', '/warmup', '/chat/', '/notes/'];
   const shouldHideNav = hideNavPaths.some((p) => location.pathname.startsWith(p));
 
   return (
@@ -24,6 +26,8 @@ function AppContent() {
           <Route path="/icebreak" element={<Icebreak />} />
           <Route path="/frequency-map" element={<FrequencyMap />} />
           <Route path="/connections" element={<Connections />} />
+          <Route path="/chat/:memberId" element={<Chat />} />
+          <Route path="/notes/:memberId" element={<ConnectionNotes />} />
           <Route path="/profile" element={<Profile />} />
         </Routes>
       </main>
