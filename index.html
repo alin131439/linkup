@@ -2,7 +2,7 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LinkUp - 发现值得长期连接的人</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +32,8 @@
               return s.replace(/~and~/g, '&');
             })
             .join('?');
-          window.history.replaceState(null, null, l.pathname + decoded + l.hash);
+          var cleanPath = l.pathname.replace(/\/$/, '');
+          window.history.replaceState(null, null, cleanPath + decoded + l.hash);
         }
       })(window.location);
     </script>
