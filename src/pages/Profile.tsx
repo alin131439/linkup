@@ -18,53 +18,31 @@ import {
   Bell,
   Download
 } from 'lucide-react';
-
-const connectionHistory = [
-  {
-    id: 1,
-    name: '张同学',
-    avatar: '👩',
-    activity: '产品设计课程组队',
-    date: '2天前',
-    tags: ['AI工具', '设计思维'],
-    mutualLight: true,
-  },
-  {
-    id: 2,
-    name: '李同学',
-    avatar: '🧑',
-    activity: '产品设计课程组队',
-    date: '2天前',
-    tags: ['摄影', '咖啡文化'],
-    mutualLight: false,
-  },
-  {
-    id: 3,
-    name: '刘总',
-    avatar: '👨‍💼',
-    activity: 'AI创新项目协作',
-    date: '15天前',
-    tags: ['创业', 'AI工具'],
-    mutualLight: true,
-  },
-];
-
-const stats = {
-  totalActivities: 12,
-  totalConnections: 38,
-  mutualLights: 8,
-  matchRate: 67,
-};
-
-const topTags = [
-  { name: 'AI工具', count: 8, color: 'bg-brand-500' },
-  { name: '设计思维', count: 6, color: 'bg-pink-500' },
-  { name: '创业', count: 5, color: 'bg-green-500' },
-  { name: '远程办公', count: 4, color: 'bg-blue-500' },
-  { name: '摄影', count: 3, color: 'bg-orange-500' },
-];
+import { useStore } from '@/store/useStore';
 
 export default function Profile() {
+  const { members, lightConnections, connectionNotes, sceneTitle } = useStore();
+
+  const mutualLights = lightConnections.filter(l => l.mutual).length;
+  const totalConnections = lightConnections.length;
+  const matchRate = totalConnections > 0 ? Math.round((mutualLights / totalConnections) * 100) : 0;
+
+  const memberTags = connectionNotes.flatMap(n => n.tags);
+  const tagCounts = memberTags.reduce<Record<string, number>>((acc, tag) => {
+    acc[tag] = (acc[tag] || 0) + 1;
+    return acc;
+  }, {});
+  const topTags = Object.entries(tagCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([name, count], i) => ({
+      name,
+      count,
+      color: ['bg-brand-500', 'bg-pink-500', 'bg-green-500', 'bg-blue-500', 'bg-orange-500'][i] || 'bg-gray-500',
+    }));
+
+  const hasData = totalConnections > 0 || connectionNotes.length > 0;
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-brand-50 pb-20 md:pb-0">
       <div className="pt-24 pb-8 px-4 sm:px-6 lg:px-8">
@@ -86,7 +64,7 @@ export default function Profile() {
                       Pro
                     </span>
                   </div>
-                  <p className="text-white/80">连接了 38 位朋友 · 参与 12 个活动</p>
+                  <p className="text-white/80">连接了 {totalConnections} 位朋友 {sceneTitle ? `· ${sceneTitle}` : ''}</p>
                 </div>
                 <button className="p-3 bg-white/20 rounded-xl hover:bg-white/30 transition-colors">
                   <Settings className="w-5 h-5" />
@@ -98,10 +76,10 @@ export default function Profile() {
           {/* Stats Overview */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {[
-              { label: '参与活动', value: stats.totalActivities, icon: Calendar, color: 'from-brand-400 to-brand-600' },
-              { label: '连接总数', value: stats.totalConnections, icon: Users, color: 'from-pink-400 to-pink-600' },
-              { label: '互留成功', value: stats.mutualLights, icon: Heart, color: 'from-green-400 to-green-600' },
-              { label: '匹配率', value: `${stats.matchRate}%`, icon: TrendingUp, color: 'from-amber-400 to-orange-500' },
+              { label: '当前场景', value: sceneTitle || '—', icon: Calendar, color: 'from-brand-400 to-brand-600' },
+              { label: '连接总数', value: totalConnections, icon: Users, color: 'from-pink-400 to-pink-600' },
+              { label: '互留成功', value: mutualLights, icon: Heart, color: 'from-green-400 to-green-600' },
+              { label: '匹配率', value: totalConnections > 0 ? `${matchRate}%` : '—', icon: TrendingUp, color: 'from-amber-400 to-orange-500' },
             ].map((stat, index) => (
               <div
                 key={stat.label}
@@ -167,37 +145,53 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="space-y-4">
-                  {connectionHistory.map((connection, index) => (
-                    <div
-                      key={connection.id}
-                      className="flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors cursor-pointer animate-fade-in-up"
-                      style={{ animationDelay: `${index * 80}ms` }}
-                    >
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-100 to-pink-100 flex items-center justify-center text-2xl flex-shrink-0">
-                        {connection.avatar}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold">{connection.name}</h3>
-                          {connection.mutualLight && (
-                            <span className="text-xs bg-pink-100 text-pink-600 px-2 py-0.5 rounded-full flex items-center gap-1">
-                              <Heart className="w-3 h-3 fill-current" />
-                              互留
-                            </span>
+                  {hasData ? (
+                  lightConnections.map((conn, index) => {
+                    const member = members.find(m => m.id === conn.memberId);
+                    const note = connectionNotes.find(n => n.memberId === conn.memberId);
+                    return (
+                      <div
+                        key={conn.memberId}
+                        className="flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 transition-colors cursor-pointer animate-fade-in-up"
+                        style={{ animationDelay: `${index * 80}ms` }}
+                      >
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-100 to-pink-100 flex items-center justify-center text-2xl flex-shrink-0">
+                          {member?.avatar || '🧑'}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="font-semibold">{member?.name || '未知成员'}</h3>
+                            {conn.mutual && (
+                              <span className="text-xs bg-pink-100 text-pink-600 px-2 py-0.5 rounded-full flex items-center gap-1">
+                                <Heart className="w-3 h-3 fill-current" />
+                                互留
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-500">{sceneTitle || '当前场景'}</p>
+                          {note && note.tags.length > 0 && (
+                            <div className="flex items-center gap-1 mt-1">
+                              {note.tags.map(tag => (
+                                <span key={tag} className="text-xs text-gray-400">#{tag}</span>
+                              ))}
+                            </div>
                           )}
                         </div>
-                        <p className="text-sm text-gray-500">{connection.activity}</p>
-                        <div className="flex items-center gap-1 mt-1">
-                          {connection.tags.map(tag => (
-                            <span key={tag} className="text-xs text-gray-400">#{tag}</span>
-                          ))}
+                        <div className="text-right flex-shrink-0">
+                          <p className="text-sm text-gray-500">
+                            {conn.matchedAt ? new Date(conn.matchedAt).toLocaleDateString('zh-CN') : '待解锁'}
+                          </p>
                         </div>
                       </div>
-                      <div className="text-right flex-shrink-0">
-                        <p className="text-sm text-gray-500">{connection.date}</p>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })
+                ) : (
+                  <div className="text-center py-12 text-gray-400">
+                    <Users className="w-12 h-12 mx-auto mb-4 opacity-30" />
+                    <p className="font-medium text-gray-500">暂无连接记录</p>
+                    <p className="text-sm mt-1">完成破冰后，你建立的连接将出现在这里</p>
+                  </div>
+                )}
                 </div>
                 <button className="w-full mt-4 py-3 border-2 border-dashed border-gray-200 rounded-2xl text-gray-500 hover:border-brand-300 hover:text-brand-600 transition-colors flex items-center justify-center gap-2">
                   查看全部连接
@@ -234,19 +228,24 @@ export default function Profile() {
                   高频标签
                 </h2>
                 <div className="space-y-3">
-                  {topTags.map((tag, i) => (
+                  {topTags.length > 0 ? topTags.map((tag, i) => (
                     <div key={tag.name} className="flex items-center gap-3">
                       <span className="text-sm font-medium text-gray-600 w-16">{tag.name}</span>
                       <div className="flex-1 h-6 bg-gray-100 rounded-full overflow-hidden">
                         <div 
                           className={`h-full ${tag.color} rounded-full flex items-center justify-end pr-2`}
-                          style={{ width: `${tag.count * 12}%` }}
+                          style={{ width: `${Math.min(tag.count * 12, 100)}%` }}
                         >
                           <span className="text-xs text-white font-medium">{tag.count}</span>
                         </div>
                       </div>
                     </div>
-                  ))}
+                  )) : (
+                    <div className="text-center py-8 text-gray-400">
+                      <Tag className="w-8 h-8 mx-auto mb-2 opacity-30" />
+                      <p className="text-sm">暂无标签数据</p>
+                    </div>
+                  )}
                 </div>
               </div>
 

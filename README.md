@@ -1,57 +1,62 @@
-# React + TypeScript + Vite
+# LinkUp
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+发现值得长期连接的人 —— 一款帮助参与者在小型活动中建立深度连接的 Web 应用。
 
-Currently, two official plugins are available:
+## 功能特性
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🏠 **双入口首页**：创建房间 / 加入房间
+- 🌡️ **破冰前热身**：心情晴雨表、你是否愿意... 两种热身游戏
+- 🗺️ **同频地图**：展示参与者的兴趣标签与同频度
+- 💡 **留灯连接**：暗色主题 + 灯泡点亮动画，3次/日限制
+- 💬 **平台聊天**：互留后生成平台内聊天窗口
+- 📝 **连接笔记**：AI 标签生成的个人印象记录
 
-## Expanding the ESLint configuration
+## 技术栈
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 18 + TypeScript
+- Vite 6
+- Tailwind CSS 3
+- Zustand（状态管理 + localStorage 持久化）
+- React Router DOM 7
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 快速开始
+
+```bash
+# 安装依赖
+npm install
+
+# 开发模式
+npm run dev
+
+# 构建生产版本
+npm run build
+
+# 预览生产构建
+npm run preview
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 项目结构
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  extends: [
-    // other configs...
-    // Enable lint rules for React
-    reactX.configs['recommended-typescript'],
-    // Enable lint rules for React DOM
-    reactDom.configs.recommended,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
 ```
+src/
+├── components/       # 可复用组件
+├── pages/            # 页面组件
+│   ├── Home.tsx          # 首页（创建/加入房间）
+│   ├── RoomLobby.tsx     # 房间大厅
+│   ├── Warmup.tsx        # 热身游戏
+│   ├── FrequencyMap.tsx # 同频地图
+│   ├── Connections.tsx   # 留灯连接
+│   ├── Chat.tsx          # 平台聊天
+│   └── ConnectionNotes.tsx # 连接笔记
+├── store/            # Zustand 状态管理
+└── index.css         # 全局样式
+```
+
+## 部署
+
+项目已配置 GitHub Pages 自动部署。推送到 `main` 分支即可触发部署流程。
+
+## 文档
+
+- [产品需求文档](.trae/documents/PRD.md)
+- [技术架构文档](.trae/documents/TechnicalArchitecture.md)
